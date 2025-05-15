@@ -91,6 +91,7 @@ const OUT_T_ADDR: u8 = 0x0c;
 const WHO_AM_I_ADDR: u8 = 0x0f;
 const CTRL_REG4_ADDR: u8 = 0x20;
 const CTRL_REG3_ADDR: u8 = 0x23;
+const CTRL_REG5_ADDR: u8 = 0x24;
 const STATUS_ADDR: u8 = 0x27;
 const OUT_X_LOW_ADDR: u8 = 0x28;
 const OUT_X_ADDR: u8 = OUT_X_LOW_ADDR;
@@ -117,6 +118,7 @@ where
     ///     2. Block for 5ms
     ///     3. Enable X, Y, & Z channels at 100Hz
     ///     4. Enable the DRDY signal
+    ///     5. Anti-aliasing filter bandwidth 200Hz, +-2G,SPI 4 Wire
     pub fn init<DELAY>(&mut self, delay: &mut DELAY) -> Result<(), IFACE::Error>
     where
         DELAY: hal::blocking::delay::DelayMs<u8>,
@@ -126,7 +128,12 @@ where
         delay.delay_ms(5);
         // Enable the XYZ channels
         self.iface.write_reg(CTRL_REG4_ADDR, 0x67)?;
-        self.iface.write_reg(CTRL_REG3_ADDR, 0xE8)
+        self.iface.write_reg(CTRL_REG3_ADDR, 0xE8)?;
+
+        self.iface.write_reg(CTRL_REG5_ADDR, 0x40)?;
+
+        delay.delay_ms(10);
+        Ok(())
     }
 
     /// Reads the accelerometer data
