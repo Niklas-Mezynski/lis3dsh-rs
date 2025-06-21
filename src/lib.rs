@@ -124,11 +124,13 @@ where
         DELAY: hal::blocking::delay::DelayMs<u8>,
     {
         // Reset it
-        self.iface.write_reg(CTRL_REG3_ADDR, 0x01)?;
+        // Maybe this is not needed
+        // self.iface.write_reg(CTRL_REG3_ADDR, 0x01)?;
         delay.delay_ms(5);
         // Enable the XYZ channels
         self.iface.write_reg(CTRL_REG4_ADDR, 0x67)?;
-        self.iface.write_reg(CTRL_REG3_ADDR, 0xE8)?;
+        // Maybe this is not needed
+        // self.iface.write_reg(CTRL_REG3_ADDR, 0xE8)?;
 
         self.iface.write_reg(CTRL_REG5_ADDR, 0x40)?;
 

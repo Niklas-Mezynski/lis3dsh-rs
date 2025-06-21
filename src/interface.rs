@@ -7,7 +7,7 @@ pub trait Interface {
     /// Should read from multiple registers, starting at address `addr`
     fn read_multiple_regs(&mut self, addr: u8, data: &mut [u8]) -> Result<(), Self::Error>;
 
-    /// Should read the constents of a single register at address `addr`
+    /// Should read the contents of a single register at address `addr`
     fn read_reg(&mut self, addr: u8) -> Result<u8, Self::Error>;
 
     /// Should write the `value` into the register at address `addr`
